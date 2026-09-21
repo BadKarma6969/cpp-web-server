@@ -17,18 +17,28 @@ A simple HTTP web server built from scratch in C++ to explore networking, concur
 
 ## Project Structure
 
-    cpp-web-server/
-    ├── server.cpp
-    ├── www/
-    │   └── index.html
-    ├── .gitignore
-    └── README.md
+cpp-web-server/
+├── server.cpp
+├── CMakeLists.txt
+├── .vscode/
+│   └── settings.json
+├── www/
+│   └── index.html
+├── .gitignore
+└── README.md
 
 ## Build
 
-    g++ -std=c++20 -pthread server.cpp -o server
+Create a build directory and configure the project with CMake:
+
+    mkdir build
+    cd build
+    cmake ..
+    make
 
 ## Run
+
+From the `build` directory:
 
     ./server
 
@@ -92,3 +102,16 @@ This project was built to explore:
 - Thread pools
 - Concurrency
 - Operating system concepts
+
+## Local Benchmark
+
+A simple localhost concurrency test was performed using 500 concurrent
+requests for the static `index.html` page.
+
+- Requests: 500
+- Elapsed time: ~0.7 s
+- Approx. throughput: ~700 requests/s
+
+This is a basic local benchmark intended to demonstrate concurrent request
+handling rather than provide a general performance comparison. Results depend
+on the machine, client overhead, and workload.

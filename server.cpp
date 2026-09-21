@@ -13,7 +13,7 @@
 #include <netinet/in.h>
 #include <unistd.h>
 
-
+std::mutex log_mutex;
 // --------------------------------------------------
 // HTTP handling
 // --------------------------------------------------
@@ -50,9 +50,13 @@ void sendResponse(int client_fd, const std::string& response) {
 
 
 void handleClient(int client_fd) {
-std::cout << "Handling request on thread: "
-          << std::this_thread::get_id()
-          << '\n';
+{
+    std::lock_guard<std::mutex> lock(log_mutex);
+
+    std::cout << "Handling request on thread: "
+              << std::this_thread::get_id()
+              << '\n';
+}
     char buffer[4096] = {0};
 
     ssize_t bytes_received = recv(
@@ -69,8 +73,12 @@ std::cout << "Handling request on thread: "
 
     std::string request(buffer);
 
+{
+    std::lock_guard<std::mutex> lock(log_mutex);
+
     std::cout << "Request received:\n";
     std::cout << request << '\n';
+}
 
     // Parse request line
     std::istringstream request_stream(request);
